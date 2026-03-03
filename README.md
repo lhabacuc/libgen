@@ -13,7 +13,7 @@ LibGen is a CLI that scaffolds and maintains Python bindings for C++ modules usi
 ## Installation
 
 ```bash
-pip install libgen-cli
+pip install sflibgen
 ```
 
 ## Usage
