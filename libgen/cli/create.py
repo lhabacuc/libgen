@@ -29,5 +29,6 @@ def run_create(name: str, destination_root: Path) -> None:
     write_text(project_root / "README.md", render_template("README.md", module_name=name, function_list="- sample_add"))
     write_text(project_root / "pyproject.toml", render_template("pyproject.toml", module_name=name))
     write_text(project_root / "setup.py", render_template("setup.py", module_name=name))
+    write_text(project_root / ".libgen-project", "version=1\n")
 
     print(f"Created project: {project_root}")

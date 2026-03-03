@@ -2,11 +2,17 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .utils import discover_bound_function_names, discover_cpp_functions, iter_cpp_sources
+from .utils import (
+    discover_bound_function_names,
+    discover_cpp_functions,
+    iter_cpp_sources,
+    require_libgen_project,
+)
 
 
 def run_validate(project_root: Path) -> None:
     project_root = project_root.resolve()
+    require_libgen_project(project_root)
     src_dir = project_root / "src"
     bindings_path = project_root / "bindings.cpp"
 

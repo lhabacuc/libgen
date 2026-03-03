@@ -5,6 +5,8 @@ from pathlib import Path
 
 from .cli.compile import run_compile
 from .cli.create import run_create
+from .cli.install import run_install
+from .cli.push import run_push
 from .cli.update import run_update
 from .cli.validate import run_validate
 from .cli.utils import list_template_names
@@ -28,6 +30,22 @@ def build_parser() -> argparse.ArgumentParser:
     compile_parser.add_argument("project_path", help="Path to the project root")
     compile_parser.add_argument("--release", action="store_true", help="Build in release mode")
 
+    install_parser = subparsers.add_parser("install", help="Install the generated Python module locally")
+    install_parser.add_argument("project_path", help="Path to the project root")
+
+    push_parser = subparsers.add_parser("push", help="Build and upload distribution to PyPI")
+    push_parser.add_argument("project_path", help="Path to the project root")
+    push_parser.add_argument(
+        "--repository",
+        default="pypi",
+        help="Twine repository alias (default: pypi, e.g., testpypi)",
+    )
+    push_parser.add_argument(
+        "--skip-build",
+        action="store_true",
+        help="Skip build step and upload existing files from dist/",
+    )
+
     validate_parser = subparsers.add_parser("validate", help="Validate binding consistency")
     validate_parser.add_argument("project_path", help="Path to the project root")
 
@@ -46,6 +64,10 @@ def main() -> None:
         run_update(Path(args.project_path))
     elif args.command == "compile":
         run_compile(Path(args.project_path), release=args.release)
+    elif args.command == "install":
+        run_install(Path(args.project_path))
+    elif args.command == "push":
+        run_push(Path(args.project_path), repository=args.repository, skip_build=args.skip_build)
     elif args.command == "validate":
         run_validate(Path(args.project_path))
     elif args.command == "list-templates":

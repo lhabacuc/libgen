@@ -4,11 +4,12 @@ import subprocess
 import sys
 from pathlib import Path
 
-from .utils import run_cmd
+from .utils import require_libgen_project, run_cmd
 
 
 def run_compile(project_root: Path, release: bool = False) -> None:
     project_root = project_root.resolve()
+    require_libgen_project(project_root)
     module_name = project_root.name
 
     cmd = [sys.executable, "-m", "pip", "wheel", ".", "-w", "dist"]
