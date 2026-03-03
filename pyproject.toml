@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "libgen-cli"
+version = "0.1.0"
+description = "CLI to generate and maintain pybind11 bindings"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+authors = [{ name = "LibGen Maintainers" }]
+license = { text = "MIT" }
+keywords = ["cpp", "python", "pybind11", "bindings", "cli"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "License :: OSI Approved :: MIT License",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Code Generators",
+]
+
+[project.scripts]
+libgen = "libgen.libgen:main"
+
+[project.urls]
+Homepage = "https://github.com/lhabacuc/libgen"
+Repository = "https://github.com/lhabacuc/libgen"
+Issues = "https://github.com/lhabacuc/libgen/issues"
+
+[tool.setuptools]
+packages = ["libgen", "libgen.cli"]
+
+[tool.setuptools.package-data]
+"libgen" = ["templates/*"]

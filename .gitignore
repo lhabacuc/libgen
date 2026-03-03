@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+*.o
+*.a
+*.egg-info/
+build/
+dist/
+.venv/
+.pytest_cache/
+
+# local generated demos
+demo/
+demo2/
+demo3/
