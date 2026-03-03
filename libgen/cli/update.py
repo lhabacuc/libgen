@@ -2,11 +2,18 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .utils import discover_cpp_functions, iter_cpp_sources, render_template, write_text
+from .utils import (
+    discover_cpp_functions,
+    iter_cpp_sources,
+    render_template,
+    require_libgen_project,
+    write_text,
+)
 
 
 def run_update(project_root: Path) -> None:
     project_root = project_root.resolve()
+    require_libgen_project(project_root)
     module_name = project_root.name
     src_dir = project_root / "src"
 
