@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: read
-  id-token: write
 
 jobs:
   build:
@@ -37,9 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/libgen-cli
-    permissions:
-      id-token: write
+      url: https://pypi.org/p/sflibgen
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -47,5 +44,29 @@ jobs:
           name: dist
           path: dist/
 
+      - name: Resolve PyPI credential
+        id: resolve_cred
+        shell: bash
+        env:
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+        run: |
+          if [ -n "$PYPI_API_TOKEN" ]; then
+            echo "password=$PYPI_API_TOKEN" >> "$GITHUB_OUTPUT"
+            echo "Using PYPI_API_TOKEN for publish."
+          elif [ -n "$TWINE_PASSWORD" ]; then
+            echo "password=$TWINE_PASSWORD" >> "$GITHUB_OUTPUT"
+            echo "Using TWINE_PASSWORD for publish."
+          else
+            echo "::warning::No PyPI credential found. Set PYPI_API_TOKEN or TWINE_PASSWORD in repository secrets. Publish step will be skipped."
+          fi
+
       - name: Publish to PyPI
+        if: ${{ steps.resolve_cred.outputs.password != '' }}
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ steps.resolve_cred.outputs.password }}
+
+      - name: Publish skipped
+        if: ${{ steps.resolve_cred.outputs.password == '' }}
+        run: echo "PyPI publish skipped because no credential was configured."
